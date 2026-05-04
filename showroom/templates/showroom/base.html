@@ -14,10 +14,12 @@
     <a href="{% url 'seller-list' %}">Sellers</a>
     &nbsp;&nbsp;|&nbsp;&nbsp;
     Hello, {{ user.username }} &mdash;
-    <form method="post" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-</form>
+   
+
+    <button hx-post="{% url 'logout' %}" 
+            hx-target="body"
+            hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}' >Logout</button>
+    
   {% else %}
     <a href="{% url 'login' %}">Login</a> |
     <a href="{% url 'register' %}">Register</a>
