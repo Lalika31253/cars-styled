@@ -1,0 +1,13 @@
+{% extends 'showroom/base.html' %}
+{% block title %}Branches{% endblock %}
+{% block content %}
+<h1>Our 4 Branches</h1>
+<ul>
+  {% for branch in branches %}
+    <li>
+      <a href="{% url 'branch-detail' branch.pk %}">{{ branch }}</a>
+      &mdash; Opened: {{ branch.opened_date|date:"M d, Y" }}
+    </li>
+  {% endfor %}
+</ul>
+{% endblock %}

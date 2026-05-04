@@ -1,0 +1,51 @@
+{% extends 'showroom/base.html' %}
+{% block title %}{{ branch.name }}{% endblock %}
+{% block content %}
+<h1>{{ branch.name }} — {{ branch.city }}</h1>
+<p>Opened: {{ branch.opened_date }}</p>
+<p>{{ branch.notes }}</p>
+
+<h2>Active Sellers at this branch</h2>
+<ul>
+  {% for seller in sellers %}
+    {# seller comes from ctx['sellers'] = branch.sellers.filter(is_active=True) #}
+    <li>
+      <a href="{% url 'seller-detail' seller.pk %}">{{ seller }}</a>
+    </li>
+  {% empty %}
+    <li>No active sellers.</li>
+  {% endfor %}
+</ul>
+
+<h2>Cars at this branch</h2>
+<a href="{% url 'car-create' %}">+ Add a car</a>
+<table border="1">
+  <tr>
+    <th>Car</th><th>Year</th><th>Price</th>
+    <th>Transmission</th><th>Seller</th><th>Actions</th>
+  </tr>
+  {% for car in cars %}
+    {# car comes from ctx['cars'] = branch.cars.select_related('seller') #}
+    <tr id="car-{{ car.pk }}">
+      <td>{{ car.make }} {{ car.model }}</td>
+      <td>{{ car.year }}</td>
+      <td>${{ car.price }}</td>
+      <td>{{ car.get_transmission_display }}</td>
+      <td>{{ car.seller }}</td>
+      <td>
+        <a href="{% url 'car-update' car.pk %}">Edit</a>
+        <!-- HTMX inline delete: replaces #car-{{ car.pk }} with empty string -->
+        <button
+          hx-delete="{% url 'car-inline-delete' car.pk %}"
+          hx-target="#car-{{ car.pk }}"
+          hx-swap="outerHTML"
+          hx-confirm="Delete this car?">
+          Delete
+        </button>
+      </td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="6">No cars at this branch.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

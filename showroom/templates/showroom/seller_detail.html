@@ -1,0 +1,26 @@
+{% extends 'showroom/base.html' %}
+{% block title %}{{ seller }}{% endblock %}
+{% block content %}
+<h1>{{ seller.first_name }} {{ seller.last_name }}</h1>
+<p>Status: {% if seller.is_active %}Active{% else %}Inactive{% endif %}</p>
+
+<h2>Branches</h2>
+<ul>
+  {% for branch in seller.branches.all %}
+    <li><a href="{% url 'branch-detail' branch.pk %}">{{ branch.name }}</a></li>
+  {% empty %}
+    <li>No branches assigned.</li>
+  {% endfor %}
+</ul>
+
+<h2>Cars Managed</h2>
+<ul>
+  {% for car in cars %}
+    <li>{{ car.year }} {{ car.make }} {{ car.model }} ({{ car.branch.name }})</li>
+  {% empty %}
+    <li>No cars managed.</li>
+  {% endfor %}
+</ul>
+<br>
+<a href="{% url 'seller-list' %}">Back to Sellers</a>
+{% endblock %}

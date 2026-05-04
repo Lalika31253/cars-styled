@@ -1,0 +1,22 @@
+{# Fragment only — no {% extends %} here #}
+{% for seller in sellers %}
+  <div id="seller-{{ seller.pk }}">
+    <strong>
+      <a href="{% url 'seller-detail' seller.pk %}">{{ seller }}</a>
+    </strong>
+    &mdash;
+    {# Branches come from prefetch_related('branches') in the view #}
+    Branches:
+    {% for branch in seller.branches.all %}
+      <a href="{% url 'branch-detail' branch.pk %}">{{ branch.name }}</a>
+      {% if not forloop.last %}, {% endif %}
+    {% endfor %}
+    &mdash;
+    Active: {{ seller.is_active|yesno:"Yes,No" }}
+    &mdash;
+    <a href="{% url 'seller-update' seller.pk %}">Edit</a> |
+    <a href="{% url 'seller-delete' seller.pk %}">Delete</a>
+  </div>
+{% empty %}
+  <p>No sellers found.</p>
+{% endfor %}

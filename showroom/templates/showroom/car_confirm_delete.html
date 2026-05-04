@@ -1,0 +1,11 @@
+{% extends 'showroom/base.html' %}
+{% block title %}Delete Car{% endblock %}
+{% block content %}
+<h1>Delete {{ object }}?</h1>
+<p>This action cannot be undone.</p>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Yes, delete</button>
+  <a href="{% url 'car-list' %}">Cancel</a>
+</form>
+{% endblock %}

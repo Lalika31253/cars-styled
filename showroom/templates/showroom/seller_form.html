@@ -1,0 +1,11 @@
+{% extends 'showroom/base.html' %}
+{% block title %}{% if object %}Edit Seller{% else %}Add Seller{% endif %}{% endblock %}
+{% block content %}
+<h1>{% if object %}Edit {{ object }}{% else %}Add a Seller{% endif %}</h1>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Save</button>
+  <a href="{% url 'seller-list' %}">Cancel</a>
+</form>
+{% endblock %}

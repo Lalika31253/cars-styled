@@ -1,0 +1,25 @@
+{% extends 'showroom/base.html' %}
+{% block title %}Sellers{% endblock %}
+{% block content %}
+<h1>Sellers</h1>
+<a href="{% url 'seller-create' %}">+ Add Seller</a>
+
+<!--
+  Same HTMX pattern as car_list.html but targeting seller_cards.html
+  distinct() in the view prevents duplicate cards when M2M matches multiple rows
+-->
+<input
+  type="search"
+  name="q"
+  placeholder="Search by name or branch..."
+  hx-get="{% url 'seller-search' %}"
+  hx-trigger="keyup changed delay:300ms"
+  hx-target="#seller-results"
+  hx-swap="innerHTML"
+>
+
+<!-- Initial full list rendered by the server -->
+<div id="seller-results">
+  {% include 'showroom/partials/seller_cards.html' %}
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'showroom/base.html' %}
+{% block title %}All Cars{% endblock %}
+{% block content %}
+<h1>All Cars</h1>
+<a href="{% url 'car-create' %}">+ Add Car</a>
+
+<!--
+  hx-get      → the URL HTMX calls
+  hx-trigger  → fires on keyup with 300 ms debounce
+  hx-target   → the element whose HTML gets replaced
+  hx-swap     → replace the inner HTML of the target
+-->
+<input
+  type="search"
+  name="q"
+  placeholder="Search by make, model or branch..."
+  hx-get="{% url 'car-search' %}"
+  hx-trigger="keyup changed delay:300ms"
+  hx-target="#car-results"
+  hx-swap="innerHTML"
+>
+
+<!-- Initial full list rendered by the server -->
+<div id="car-results">
+  {% include 'showroom/partials/car_table.html' %}
+</div>
+{% endblock %}

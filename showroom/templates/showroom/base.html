@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Dealership{% endblock %}</title>
+</head>
+<!-- hx-headers sends the CSRF token with every HTMX request -->
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  <nav>
+  {% if user.is_authenticated %}
+    <a href="{% url 'branch-list' %}">Branches</a> |
+    <a href="{% url 'car-list' %}">Cars</a> |
+    <a href="{% url 'seller-list' %}">Sellers</a>
+    &nbsp;&nbsp;|&nbsp;&nbsp;
+    Hello, {{ user.username }} &mdash;
+    <form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>
+  {% else %}
+    <a href="{% url 'login' %}">Login</a> |
+    <a href="{% url 'register' %}">Register</a>
+  {% endif %}
+</nav>
+  <hr>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- HTMX from CDN — no installation needed -->
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</body>
+</html>

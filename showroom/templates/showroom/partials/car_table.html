@@ -1,0 +1,26 @@
+{# This template renders with NO extends — it is a fragment, not a full page #}
+<table border="1">
+  <tr>
+    <th>Car</th><th>Year</th><th>Price</th>
+    <th>Branch</th><th>Seller</th><th>Actions</th>
+  </tr>
+  {% for car in cars %}
+    <tr id="car-{{ car.pk }}">
+      <td>{{ car.make }} {{ car.model }}</td>
+      <td>{{ car.year }}</td>
+      <td>${{ car.price }}</td>
+      <td>
+        <a href="{% url 'branch-detail' car.branch.pk %}">
+          {{ car.branch.name }}
+        </a>
+      </td>
+      <td>{{ car.seller }}</td>
+      <td>
+        <a href="{% url 'car-update' car.pk %}">Edit</a> |
+        <a href="{% url 'car-delete' car.pk %}">Delete</a>
+      </td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="6">No cars found.</td></tr>
+  {% endfor %}
+</table>
